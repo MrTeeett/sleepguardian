@@ -1,0 +1,32 @@
+{
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+
+  "editor.insertSpaces": false,
+  "editor.tabSize": 4,
+  "editor.detectIndentation": false,
+
+  "go.useLanguageServer": true,
+  "gopls": {
+    "ui.semanticTokens": true,
+    "formatting.gofumpt": true,
+    "ui.completion.dependsOn": ["diagnostics"]
+  },
+  "go.formatTool": "gofmt",
+  "go.lintTool": "golangci-lint",
+  "go.lintFlags": ["--fast"],
+  "go.testFlags": ["-count=1"],
+
+  "go.toolsManagement.autoUpdate": true,
+
+  "go.buildOnSave": "off",
+
+  "go.toolsEnvVars": {
+    "CGO_ENABLED": "0"
+  },
+
+  "editor.formatOnSave": true,
+
+  "makefile.configureOnOpen": true
+}

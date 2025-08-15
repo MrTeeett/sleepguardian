@@ -1,0 +1,77 @@
+{
+  "version": "2.0.0",
+  "options": {
+    "env": {
+      "CGO_ENABLED": "0"
+    }
+  },
+  "inputs": [
+    {
+      "id": "targets",
+      "type": "pickString",
+      "description": "Выберите GOOS/GOARCH цели для make build",
+      "options": [
+        "linux/amd64",
+        "linux/arm64",
+        "windows/amd64"
+      ],
+      "default": "linux/amd64"
+    }
+  ],
+  "tasks": [
+    {
+      "label": "make: build (current)",
+      "type": "shell",
+      "command": "make build",
+      "problemMatcher": ["$go"],
+      "group": "build"
+    },
+    {
+      "label": "make: build (select targets)",
+      "type": "shell",
+      "command": "make build TARGETS=\"${input:targets}\"",
+      "problemMatcher": ["$go"],
+      "group": "build"
+    },
+    {
+      "label": "make: clean",
+      "type": "shell",
+      "command": "make clean",
+      "group": "build"
+    },
+    {
+      "label": "go: tidy",
+      "type": "shell",
+      "command": "go mod tidy",
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "go: vet",
+      "type": "shell",
+      "command": "go vet ./...",
+      "problemMatcher": ["$go"],
+      "group": "build"
+    },
+    {
+      "label": "go: build (auto-detect main)",
+      "type": "shell",
+      "command": "bash -c 'PKG=./cmd/guardian; [ -e ./cmd/guardian/main.go ] || PKG=.; echo Building $PKG; go build -trimpath -ldflags \"-s -w\" -o ./.vscode/bin/guardian $PKG'",
+      "windows": {
+        "command": "powershell -NoProfile -Command \"$pkg='./cmd/guardian'; if(!(Test-Path './cmd/guardian/main.go')){$pkg='.'}; Write-Host ('Building ' + $pkg); go build -trimpath -ldflags '-s -w' -o ./.vscode/bin/guardian $pkg\""
+      },
+      "problemMatcher": ["$go"],
+      "group": "build"
+    },
+    {
+      "label": "run: guardian (local)",
+      "type": "shell",
+      "dependsOn": "go: build (auto-detect main)",
+      "command": ".vscode/bin/guardian -config \"${env:HOME}/.config/sleepguardian/config.json\"",
+      "windows": {
+        "command": ".vscode\\bin\\guardian.exe -config \"${env:APPDATA}\\sleepguardian\\config.json\""
+      },
+      "group": "build"
+    }
+  ]
+}

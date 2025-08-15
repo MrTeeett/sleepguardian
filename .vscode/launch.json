@@ -1,0 +1,69 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug (cmd)",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "${workspaceFolder}/cmd",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "CGO_ENABLED": "0"
+      },
+      "args": [
+        "-config",
+        "configs/config.example.json"
+      ],
+      "preLaunchTask": "go: build (auto-detect main)"
+    },
+    {
+      "name": "Debug (root ./main.go)",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "${workspaceFolder}",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "CGO_ENABLED": "0"
+      },
+      "args": [
+        "-config",
+        "configs/config.example.json"
+      ],
+      "preLaunchTask": "go: build (auto-detect main)"
+    },
+    {
+      "name": "Run (make build & run local)",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/cmd",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "CGO_ENABLED": "0"
+      },
+      "args": [
+        "-config",
+        "configs/config.example.json"
+      ],
+      "preLaunchTask": "make: build (current)"
+    },
+    {
+      "name": "Debug (Windows)",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "${workspaceFolder}/cmd",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "CGO_ENABLED": "0"
+      },
+      "args": [
+        "-config",
+        "configs/config.example.json"
+      ],
+      "preLaunchTask": "go: build (auto-detect main)"
+    }
+  ]
+}
