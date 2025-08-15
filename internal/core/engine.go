@@ -53,6 +53,9 @@ func (e *Engine) TogglePause() {
 	e.paused.Store(p)
 	if p {
 		_ = e.inhib.Release()
+		slog.Info("pause ON")
+	} else {
+		slog.Info("pause OFF")
 	}
 }
 func (e *Engine) TriggerSuspend()   { _ = e.trig.Suspend("guardian menu") }

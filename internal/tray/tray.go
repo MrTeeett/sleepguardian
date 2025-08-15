@@ -47,6 +47,11 @@ func Run(o Options) {
 					state += " (пауза)"
 				}
 				mStatus.SetTitle(fmt.Sprintf("Статус: %s • с %s", state, since.Format("15:04:05")))
+				if paused {
+					mPause.Check()
+				} else {
+					mPause.Uncheck()
+				}
 				time.Sleep(1 * time.Second)
 			}
 		}()
@@ -56,7 +61,11 @@ func Run(o Options) {
 				select {
 				case <-mPause.ClickedCh:
 					o.OnPauseToggle()
-					mPause.Check()
+					if mPause.Checked() {
+						mPause.Uncheck()
+					} else {
+						mPause.Check()
+					}
 				case <-mSleep.ClickedCh:
 					o.OnSleepNow()
 				case <-mHiber.ClickedCh:
