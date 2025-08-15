@@ -1,9 +1,9 @@
 package tray
 
 import (
+	_ "embed"
 	"fmt"
 	"time"
-	_ "embed"
 
 	"fyne.io/systray"
 )
