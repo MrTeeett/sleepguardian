@@ -65,7 +65,7 @@ func parseU64(s string) uint64 {
 	var v uint64
 	for _, c := range s {
 		if c < '0' || c > '9' {
-			return v
+			return 0
 		}
 		v = v*10 + uint64(c-'0')
 	}

@@ -33,7 +33,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	logx.Setup(cfg.Log)
+	if c := logx.Setup(cfg.Log); c != nil {
+		defer c.Close()
+	}
 
 	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer cancel()
