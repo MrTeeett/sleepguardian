@@ -3,8 +3,8 @@
   "monitor": {
     "interval_ms": 1000,
     "weights": { "net": 1.0, "disk": 1.0 },
-    "active_threshold_bps": 51200,
-    "idle_threshold_bps": 20480,
+    "active_threshold_mbps": 50,
+    "idle_threshold_pct": 20,
     "min_active_sec": 5,
     "min_idle_sec": 10,
     "interfaces_include": [],

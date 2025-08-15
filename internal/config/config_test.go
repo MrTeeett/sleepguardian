@@ -21,7 +21,7 @@ func writeTempConfig(t *testing.T, content string) string {
 func TestLoadSetsDefaults(t *testing.T) {
 	cfgJSON := `{
         "log":{},
-        "monitor":{"interval_ms":0,"weights":{"net":1,"disk":1},"active_threshold_bps":1,"idle_threshold_bps":1},
+        "monitor":{"interval_ms":0,"weights":{"net":1,"disk":1},"active_threshold_mbps":1,"idle_threshold_pct":50},
         "exceptions":{},
         "sleep":{"mode":"none"},
         "tray":{"show":false}
@@ -34,12 +34,18 @@ func TestLoadSetsDefaults(t *testing.T) {
 	if cfg.Monitor.IntervalMS != 1000 {
 		t.Fatalf("expected default interval 1000, got %d", cfg.Monitor.IntervalMS)
 	}
+	if cfg.Monitor.ActiveThresholdBPS != 125000 {
+		t.Fatalf("active threshold conversion incorrect: %d", cfg.Monitor.ActiveThresholdBPS)
+	}
+	if cfg.Monitor.IdleThresholdBPS != 62500 {
+		t.Fatalf("idle threshold conversion incorrect: %d", cfg.Monitor.IdleThresholdBPS)
+	}
 }
 
 func TestLoadThresholdError(t *testing.T) {
 	cfgJSON := `{
         "log":{},
-        "monitor":{"interval_ms":100,"weights":{"net":1,"disk":1},"active_threshold_bps":0,"idle_threshold_bps":0},
+        "monitor":{"interval_ms":100,"weights":{"net":1,"disk":1},"active_threshold_mbps":0,"idle_threshold_pct":0},
         "exceptions":{},
         "sleep":{"mode":"none"},
         "tray":{"show":false}

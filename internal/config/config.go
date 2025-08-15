@@ -11,16 +11,18 @@ type Log struct{ Level, Format, File string }
 type Weights struct{ Net, Disk float64 }
 
 type Monitor struct {
-	IntervalMS         int      `json:"interval_ms"`
-	Weights            Weights  `json:"weights"`
-	ActiveThresholdBPS int64    `json:"active_threshold_bps"`
-	IdleThresholdBPS   int64    `json:"idle_threshold_bps"`
-	MinActiveSec       int      `json:"min_active_sec"`
-	MinIdleSec         int      `json:"min_idle_sec"`
-	InterfacesInclude  []string `json:"interfaces_include"`
-	InterfacesExclude  []string `json:"interfaces_exclude"`
-	DisksInclude       []string `json:"disks_include"`
-	DisksExclude       []string `json:"disks_exclude"`
+	IntervalMS          int      `json:"interval_ms"`
+	Weights             Weights  `json:"weights"`
+	ActiveThresholdMbps float64  `json:"active_threshold_mbps"`
+	IdleThresholdPct    float64  `json:"idle_threshold_pct"`
+	MinActiveSec        int      `json:"min_active_sec"`
+	MinIdleSec          int      `json:"min_idle_sec"`
+	InterfacesInclude   []string `json:"interfaces_include"`
+	InterfacesExclude   []string `json:"interfaces_exclude"`
+	DisksInclude        []string `json:"disks_include"`
+	DisksExclude        []string `json:"disks_exclude"`
+	ActiveThresholdBPS  int64    `json:"-"`
+	IdleThresholdBPS    int64    `json:"-"`
 }
 
 type Exceptions struct {
@@ -62,9 +64,14 @@ func Load(path string) (*Config, error) {
 	if cfg.Monitor.IntervalMS <= 0 {
 		cfg.Monitor.IntervalMS = 1000
 	}
-	if cfg.Monitor.ActiveThresholdBPS <= 0 || cfg.Monitor.IdleThresholdBPS <= 0 {
+	if cfg.Monitor.ActiveThresholdMbps <= 0 || cfg.Monitor.IdleThresholdPct <= 0 {
 		return nil, errors.New("thresholds must be > 0")
 	}
+	if cfg.Monitor.IdleThresholdPct >= 100 {
+		return nil, errors.New("idle_threshold_pct must be < 100")
+	}
+	cfg.Monitor.ActiveThresholdBPS = int64(cfg.Monitor.ActiveThresholdMbps * 1_000_000 / 8)
+	cfg.Monitor.IdleThresholdBPS = int64(float64(cfg.Monitor.ActiveThresholdBPS) * cfg.Monitor.IdleThresholdPct / 100)
 	return &cfg, nil
 }
 func (m Monitor) Interval() time.Duration { return time.Duration(m.IntervalMS) * time.Millisecond }

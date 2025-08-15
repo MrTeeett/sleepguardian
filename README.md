@@ -52,7 +52,8 @@ make TARGETS="windows/amd64 linux/amd64"
 Параметры отслеживания активности:
 - `interval_ms` — период опроса в миллисекундах (по умолчанию 1000);
 - `weights.net` и `weights.disk` — коэффициенты важности для сети и диска;
-- `active_threshold_bps` и `idle_threshold_bps` — пороги активности в байтах/секунду, должны быть > 0;
+- `active_threshold_mbps` — порог активности в мегабитах/секунду;
+- `idle_threshold_pct` — процент от активного порога, при котором считается простой (значение > 0 и < 100);
 - `min_active_sec` и `min_idle_sec` — минимальная длительность состояния;
 - `interfaces_include`/`interfaces_exclude` — списки сетевых интерфейсов;
 - `disks_include`/`disks_exclude` — списки дисков. Пустые списки означают «все».
