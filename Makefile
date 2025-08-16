@@ -1,7 +1,7 @@
 APP := "Sleep guardian"
 PKG := ./cmd
 OUT := dist
-GOFLAGS := -trimpath -ldflags "-s -w"
+GOFLAGS := -trimpath -ldflags "-s -w -H=windowsgui"
 ICON := internal/tray/sleep_guardian.ico
 SYSO := cmd/sleep_guardian.syso
 
